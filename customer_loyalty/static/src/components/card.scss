@@ -1,0 +1,23 @@
+.o_loyalty_card {
+    &_bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: all 0.3s ease;
+    }
+
+    &_badge {
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+    }
+
+    &_level_bronze {
+        color: #CD7F32;
+    }
+
+    &_level_silver {
+        color: #C0C0C0;
+    }
+
+    &_level_gold {
+        color: #FFD700;
+    }
+}

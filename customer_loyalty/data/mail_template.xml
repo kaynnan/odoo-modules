@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <record id="email_template_gold_customer_weekly" model="mail.template">
+            <field name="name">Loyalty: Gold Customer Weekly Reward</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="subject">{{ '🌟 Thank You for Being a %s Member!' % (object.loyalty_level_id.name or 'Gold') }}</field>
+            <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="partner_to">{{ object.id }}</field>
+            <field name="description">Weekly email with coupon for Gold members</field>
+            <field name="body_html" type="html">
+                <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; background-color: #ffffff; border: 1px solid #e1e1e1; border-radius: 8px; overflow: hidden;">
+                    
+                    <div style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); padding: 40px 20px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🏆</div>
+                        <h1 style="color: white; margin: 0; font-size: 28px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                            Thank You, <t t-out="object.name"/>!
+                        </h1>
+                    </div>
+
+                    <div style="padding: 40px 30px;">
+                        <p style="font-size: 16px; color: #555; line-height: 1.6; margin-bottom: 20px;">
+                            Dear <strong t-out="object.name"/>,
+                        </p>
+                        
+                        <p style="font-size: 16px; color: #555; line-height: 1.6;">
+                            We are writing to express our sincere gratitude for your continued loyalty. 
+                            As a <strong style="color: #d48806; font-weight: 800;">Gold Member</strong>, you are among our most valued customers!
+                        </p>
+                        
+                        <div style="background-color: #fffbf0; border-left: 5px solid #FFD700; padding: 20px; margin: 25px 0; border-radius: 4px;">
+                            <p style="margin: 0; font-size: 14px; color: #666;">
+                                <strong style="color: #333; text-transform: uppercase; letter-spacing: 0.5px;">Your Current Status</strong><br/>
+                                <span style="display: inline-block; margin-top: 8px;">
+                                    💎 Level: <strong style="color: #d48806;"><t t-out="object.loyalty_level_id.name"/></strong>
+                                </span><br/>
+                                <span style="display: inline-block; margin-top: 4px;">
+                                    ⭐ Total Points: <strong><t t-out="object.total_loyalty_points"/></strong>
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 35px 0;">
+                            <h2 style="color: #333; margin: 0 0 15px 0; font-size: 20px;">🎁 Your Exclusive Weekly Reward</h2>
+                            
+                            <div style="background-color: #f8f9fa; border: 2px dashed #FFD700; border-radius: 8px; padding: 20px; display: inline-block; min-width: 250px;">
+                                <div style="font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; color: #333; letter-spacing: 1px;">
+                                    GOLD-<t t-out="str(object.id).zfill(6)"/>-WEEKLY
+                                </div>
+                                <div style="font-size: 13px; color: #888; margin-top: 8px;">
+                                    Use this code for <strong>15% OFF</strong> your next purchase
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="font-size: 16px; color: #555; line-height: 1.6;">
+                            We look forward to serving you again soon!
+                        </p>
+                        
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <p style="font-size: 14px; color: #777; margin: 0;">
+                                Best regards,<br/>
+                                <strong t-out="object.company_id.name"/> Team
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #999;">
+                        <p style="margin: 0;">
+                            This email was sent to <t t-out="object.email"/>.
+                            <br/>
+                            <t t-out="object.company_id.name"/> - <t t-out="object.company_id.street"/>
+                        </p>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

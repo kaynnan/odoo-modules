@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loyalty_level_user,loyalty.level.user,model_loyalty_level,customer_loyalty.group_loyalty_user,1,0,0,0
+access_loyalty_level_manager,loyalty.level.manager,model_loyalty_level,customer_loyalty.group_loyalty_card_manager,1,1,1,1
+access_loyalty_level_portal,loyalty.level.portal,model_loyalty_level,base.group_portal,1,0,0,0
+access_loyalty_wallet_user,loyalty.wallet.user,model_loyalty_wallet,customer_loyalty.group_loyalty_user,1,1,1,0
+access_loyalty_wallet_manager,loyalty.wallet.manager,model_loyalty_wallet,customer_loyalty.group_loyalty_card_manager,1,1,1,1
+access_loyalty_wallet_portal,loyalty.wallet.portal,model_loyalty_wallet,base.group_portal,1,0,0,0
+access_loyalty_wallet_line_user,loyalty.wallet.line.user,model_loyalty_wallet_line,customer_loyalty.group_loyalty_user,1,0,1,0
+access_loyalty_wallet_line_manager,loyalty.wallet.line.manager,model_loyalty_wallet_line,customer_loyalty.group_loyalty_card_manager,1,1,1,1
+access_loyalty_wallet_line_portal,loyalty.wallet.line.portal,model_loyalty_wallet_line,base.group_portal,1,0,0,0

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_loyalty" model="ir.actions.report">
+        <field name="name">Loyalty Summary</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">customer_loyalty.report_loyalty</field>
+        <field name="report_file">customer_loyalty.report_loyalty</field>
+        <field name="binding_model_id" ref="model_res_partner"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">object._get_loyalty_report_filename()</field>
+    </record>
+
+    <template id="report_loyalty">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="doc" t-value="doc.with_context(lang=doc.lang)"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        
+                        <div class="row border-bottom pb-2 mb-3">
+                            <div class="col-8">
+                                <h3 class="m-0 text-primary">Loyalty Scorecard</h3>
+                                <small class="text-muted" t-field="doc.name"/>
+                            </div>
+                            <div class="col-4 text-end">
+                                <span class="badge bg-light text-dark border">
+                                    Date: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 g-2">
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded border">
+                                    <small class="text-uppercase text-muted fw-bold">Level</small>
+                                    <div class="h4 mb-0 text-primary" t-field="doc.loyalty_level_id"/>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-light rounded border text-end">
+                                    <small class="text-uppercase text-muted fw-bold">Balance</small>
+                                    <div class="h4 mb-0 text-dark">
+                                        <span t-field="doc.total_loyalty_points" t-options='{"widget": "float", "precision": 0}'/> pts
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <t t-set="lines" t-value="doc.loyalty_wallet_ids.mapped('line_ids').filtered(lambda l: l.sale_order_id).sorted(key=lambda l: l.create_date, reverse=True)"/>
+
+                        <div t-if="not lines" class="alert alert-light text-center border">No transaction history.</div>
+
+                        <table t-if="lines" class="table table-sm table-striped border mb-0" style="font-size: 0.9rem;">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Source</th>
+                                    <th>Description</th>
+                                    <th class="text-end">Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="lines" t-as="l">
+                                    <td class="text-nowrap"><span t-field="l.create_date" t-options='{"widget": "date"}'/></td>
+                                    <td><span t-field="l.sale_order_id.name"/></td>
+                                    <td class="text-truncate" style="max-width: 250px;"><span t-field="l.description"/></td>
+                                    <td class="text-end fw-bold">
+                                        <span t-field="l.points" t-options='{"widget": "float", "precision": 2}'
+                                              t-att-class="'text-danger' if l.points &lt; 0 else 'text-success'"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="row mt-2" t-if="lines">
+                            <div class="col-12 text-end">
+                                <small class="text-muted me-2">Net Total from Sales:</small>
+                                <strong t-esc="sum(lines.mapped('points'))" t-options='{"widget": "float", "precision": 2}'/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

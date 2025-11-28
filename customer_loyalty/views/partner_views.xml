@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_loyalty" model="ir.ui.view">
+        <field name="name">res.partner.form.loyalty</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="action_view_loyalty_details" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-star"
+                        invisible="total_loyalty_points == 0">
+                    <field name="total_loyalty_points" widget="statinfo" string="Points"/>
+                </button>
+            </div>
+            <xpath expr="//notebook" position="inside">
+                <page string="Loyalty Program" name="loyalty">
+                    <div class="o_customer_loyalty_widget mb-3">
+                        <field name="total_loyalty_points" 
+                               widget="loyalty_points_widget" 
+                               nolabel="1"
+                               colspan="2"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="loyalty_level_id" 
+                                   widget="badge"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            
+                            <field name="total_loyalty_points" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    <separator string="Loyalty Wallets" class="mt-4"/>
+                    <field name="loyalty_wallet_ids" context="{'default_partner_id': id}">
+                        <list string="Wallets" 
+                              editable="bottom" 
+                              decoration-muted="not active"
+                              decoration-danger="points &lt; 0"
+                              decoration-bf="points &gt; 0"
+                              default_order="create_date desc">
+                            <field name="create_date" optional="hide"/>
+                            <field name="name"/>
+                            <field name="points" sum="Total Points" decoration-bf="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="id" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

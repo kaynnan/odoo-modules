@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_customer_loyalty_root"
+              name="Loyalty"
+              sequence="50"
+              web_icon="customer_loyalty,static/description/icon.png"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_loyalty_wallets"
+              name="Wallets"
+              parent="menu_customer_loyalty_root"
+              action="action_loyalty_wallet"
+              sequence="10"/>
+
+    <menuitem id="menu_loyalty_config"
+              name="Configuration"
+              parent="menu_customer_loyalty_root"
+              sequence="100"
+              groups="customer_loyalty.group_loyalty_card_manager"/>
+
+    <record id="action_loyalty_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'customer_loyalty'}</field>
+    </record>
+
+    <menuitem id="menu_loyalty_settings"
+              name="Settings"
+              parent="menu_loyalty_config"
+              sequence="0"
+              action="action_loyalty_config_settings"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_loyalty_levels"
+              name="Loyalty Levels"
+              parent="menu_loyalty_config"
+              action="action_loyalty_level"
+              sequence="10"/>
+
+</odoo>

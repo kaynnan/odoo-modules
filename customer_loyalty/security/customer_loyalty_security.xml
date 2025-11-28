@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="module_category_customer_loyalty" model="ir.module.category">
+        <field name="name">Customer Loyalty</field>
+        <field name="description">Manage loyalty programs, points, and rewards.</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_loyalty_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_customer_loyalty"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_loyalty_card_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_customer_loyalty"/>
+        <field name="implied_ids" eval="[(4, ref('group_loyalty_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="loyalty_wallet_comp_rule" model="ir.rule">
+        <field name="name">Loyalty Wallet: Multi-Company</field>
+        <field name="model_id" ref="model_loyalty_wallet"/>
+        <field name="domain_force">['|', ('partner_id.company_id', '=', False), ('partner_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="loyalty_wallet_line_comp_rule" model="ir.rule">
+        <field name="name">Loyalty Wallet Line: Multi-Company</field>
+        <field name="model_id" ref="model_loyalty_wallet_line"/>
+        <field name="domain_force">['|', ('partner_id.company_id', '=', False), ('partner_id.company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="loyalty_wallet_portal_rule" model="ir.rule">
+        <field name="name">Portal User: Own Loyalty Wallets</field>
+        <field name="model_id" ref="model_loyalty_wallet"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+
+    <record id="loyalty_wallet_line_portal_rule" model="ir.rule">
+        <field name="name">Portal User: Own Loyalty Wallet Lines</field>
+        <field name="model_id" ref="model_loyalty_wallet_line"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+
+</odoo>
